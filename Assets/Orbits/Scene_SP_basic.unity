@@ -97,6 +97,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -238,8 +239,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191554812}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -356,6 +358,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 7d0dfebd6b4a047ddaa17d6f5b817fe5, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -433,6 +436,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 7d0dfebd6b4a047ddaa17d6f5b817fe5, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -480,7 +484,7 @@ MonoBehaviour:
   spin: 1
   speed: 20
   use_isls: 1
-  use_relays: 1
+  use_relays: 0
   relay_dist_step: 2
   direction: 1
   directionChangeSpeed: 2
@@ -501,13 +505,13 @@ MonoBehaviour:
   countdown: {fileID: 485043185}
   rightbottom: {fileID: 1204926847}
   maxorbits: 24
-  route_choice: 2
-  constellation: 1
-  no_of_paths: 1
+  route_choice: 3
+  constellation: 2
+  no_of_paths: 2
   decimator: 1
   raan0: 0
-  log_choice: 2
-  log_filename: /users/mjh/docs/starlink/dist.txt
+  log_choice: 1
+  log_filename: /Users/sylvia/Desktop/dist.txt
   beam_on: 0
   graph_on: 0
   speedup: 1
@@ -527,7 +531,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1375312110}
   - component: {fileID: 1375312109}
-  - component: {fileID: 1375312108}
   - component: {fileID: 1375312107}
   - component: {fileID: 1375312106}
   - component: {fileID: 1375312111}
@@ -547,14 +550,6 @@ AudioListener:
   m_GameObject: {fileID: 1375312105}
   m_Enabled: 1
 --- !u!124 &1375312107
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375312105}
-  m_Enabled: 1
---- !u!92 &1375312108
 Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,6 +680,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 7d0dfebd6b4a047ddaa17d6f5b817fe5, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -764,6 +760,7 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 7d0dfebd6b4a047ddaa17d6f5b817fe5, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
