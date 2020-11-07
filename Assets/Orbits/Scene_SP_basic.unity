@@ -484,6 +484,7 @@ MonoBehaviour:
   spin: 1
   speed: 20
   use_isls: 1
+  skip_satellites: 1
   use_relays: 0
   relay_dist_step: 2
   direction: 1
@@ -506,11 +507,11 @@ MonoBehaviour:
   rightbottom: {fileID: 1204926847}
   maxorbits: 24
   route_choice: 3
-  constellation: 2
-  no_of_paths: 2
+  constellation: 0
+  no_of_paths: 5
   decimator: 1
   raan0: 0
-  log_choice: 1
+  log_choice: 0
   log_filename: /Users/sylvia/Desktop/dist.txt
   beam_on: 0
   graph_on: 0

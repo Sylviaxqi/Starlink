@@ -358,6 +358,21 @@ public class SatelliteSP0031 {
 		}
 	}
 
+	// skipping satellites on the same orbital plane 
+	public void PreAssignLasersCrossOrbitalPlanes(int numCrossed) {
+		int count = 0;
+		int satbase = (satid / sats_per_orbit) * sats_per_orbit;
+		int nextsat = (((satid - satbase) + numCrossed) % sats_per_orbit) + satbase;
+		for (int i = 0; i < nearestcount; i++) {
+			if (nearestsats [i].satid == nextsat) {
+				PreAssign (nearestsats [i]);
+				if (count == 2)
+					return;
+				count++;
+			}
+		}
+	}
+
 	// code intended for polar satellites
 	public void PreAssignLasers1b() {
 		int count = 0;

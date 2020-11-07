@@ -44,6 +44,8 @@ public class SP_basic_0031: MonoBehaviour {
 	[Tooltip("Enable use of inter-sat lasers")]
 	public bool use_isls = true;
 	[Tooltip("Enable use of ground relays")]
+	public bool skip_satellites = false;
+	[Tooltip("Enable skipping satlellites on the same orbital plane")]
 	public bool use_relays = false;
 	public float relay_dist_step = 1f;
 	[HideInInspector]
@@ -83,6 +85,9 @@ public class SP_basic_0031: MonoBehaviour {
 	bool isl_connect_plane = true;
 	int isl_plane2_shift = 0;
 	int isl_plane2_step = 0;
+	int isl_plane3_shift = 0;
+	int isl_plane3_step = 0;
+	int numSats_to_cross = 0;
 	double meandist;
 	float start_time;
 	bool pause = false;
@@ -178,8 +183,14 @@ public class SP_basic_0031: MonoBehaviour {
 			beam_radius = 940f;
 			orbital_period = 5739; // seconds
 			isl_connect_plane = true;
+			skip_satellites = true;
 			isl_plane_shift = -1;  // isl offset to next plane
 			isl_plane_step = 1;
+			isl_plane2_shift = -1;
+			isl_plane2_step = 1;
+			isl_plane3_shift = -2;
+			isl_plane3_step = 1;
+			numSats_to_cross = 2;
 			phase_offset = 13f / 24f;
 			break;
 		case ConstellationChoice.P72_S22_A550:
@@ -208,8 +219,14 @@ public class SP_basic_0031: MonoBehaviour {
 			beam_radius = 1060f;
 			orbital_period = 6500; // seconds
 			isl_connect_plane = true;
-			isl_plane_shift = 0; 
+			skip_satellites = true;
+			isl_plane_shift = -1; 
 			isl_plane_step = 1;
+			isl_plane2_shift = -1;
+			isl_plane2_step = 1;
+			isl_plane3_shift = -2;
+			isl_plane3_step = 1;
+			numSats_to_cross = 2; // number of satellites to skip
 			phase_offset = 11f / 32f;
 			break;
 		}
@@ -276,13 +293,29 @@ public class SP_basic_0031: MonoBehaviour {
 		meandist /= (maxsats - 1);
 		for (int satnum = 0; satnum < maxsats; satnum++) {
 			if (use_isls) {
-				if (isl_connect_plane) {
+				if (skip_satellites) {
+					int orbitNum = maxsats / satsperorbit; // 24 for P24_S66
+					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { 
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);
+						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // cross one satellites on same plane
+						
+					}
+					else {
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step);
+					}
+				}
+				else {
+					if (isl_connect_plane) {
 					// connect lasers along orbital plane
 					satlist [satnum].PreAssignLasersOrbitalPlane ();
-				} else {
+					} else {
 					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);
+					}
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
 				}
-				satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
+
+				
 			}
 		}
 
