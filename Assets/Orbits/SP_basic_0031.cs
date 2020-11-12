@@ -44,8 +44,8 @@ public class SP_basic_0031: MonoBehaviour {
 	[Tooltip("Enable use of inter-sat lasers")]
 	public bool use_isls = true;
 	[Tooltip("Enable use of ground relays")]
-	public bool skip_satellites = false;
-	[Tooltip("Enable skipping satlellites on the same orbital plane")]
+	// public bool skip_satellites = false;
+	// [Tooltip("Enable skipping satlellites on the same orbital plane")]
 	public bool use_relays = false;
 	public float relay_dist_step = 1f;
 	[HideInInspector]
@@ -128,6 +128,9 @@ public class SP_basic_0031: MonoBehaviour {
 	public enum ConstellationChoice {P24_S66_A550, P72_S22_A550, P32_S50_A1100};
 	public ConstellationChoice constellation;
 	public int no_of_paths = 1;
+	
+	public enum TopologyChoice {basic, skip_satellites};
+	public TopologyChoice topology;
 
 	public int decimator;
 	public float raan0 = 0f;
@@ -135,7 +138,7 @@ public class SP_basic_0031: MonoBehaviour {
 
 	public enum LogChoice {None, RTT, Distance}; // round trip time,
 	public LogChoice log_choice = LogChoice.None;
-	public string log_filename = "/Users/sylvia/Desktop/dist.txt";
+	public string log_filename = "/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt";
 	public enum BeamChoice {AllOff, AllOn, SrcDstOn};
 	public BeamChoice beam_on;
 	public bool graph_on;
@@ -183,7 +186,6 @@ public class SP_basic_0031: MonoBehaviour {
 			beam_radius = 940f;
 			orbital_period = 5739; // seconds
 			isl_connect_plane = true;
-			skip_satellites = true;
 			isl_plane_shift = -1;  // isl offset to next plane
 			isl_plane_step = 1;
 			isl_plane2_shift = -1;
@@ -202,11 +204,14 @@ public class SP_basic_0031: MonoBehaviour {
 			maxdist = 1123f;
 			beam_radius = 940f;
 			orbital_period = 5739; // seconds	
-			isl_connect_plane = false;
-			isl_plane_shift = -1; 
+			isl_connect_plane = true;
+			isl_plane_shift = -1;
 			isl_plane_step = 1;
 			isl_plane2_shift = -1;
-			isl_plane2_step = 2;
+			isl_plane2_step = 1;
+			isl_plane3_shift = -2;
+			isl_plane3_step = 1;
+			numSats_to_cross = 2;
 			phase_offset = 39f / 72f;
 			break;
 		case ConstellationChoice.P32_S50_A1100:
@@ -219,7 +224,6 @@ public class SP_basic_0031: MonoBehaviour {
 			beam_radius = 1060f;
 			orbital_period = 6500; // seconds
 			isl_connect_plane = true;
-			skip_satellites = true;
 			isl_plane_shift = -1; 
 			isl_plane_step = 1;
 			isl_plane2_shift = -1;
@@ -293,19 +297,8 @@ public class SP_basic_0031: MonoBehaviour {
 		meandist /= (maxsats - 1);
 		for (int satnum = 0; satnum < maxsats; satnum++) {
 			if (use_isls) {
-				if (skip_satellites) {
-					int orbitNum = maxsats / satsperorbit; // 24 for P24_S66
-					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { 
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);
-						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // cross one satellites on same plane
-						
-					}
-					else {
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step);
-					}
-				}
-				else {
+				switch (topology)  {
+				case TopologyChoice.basic:
 					if (isl_connect_plane) {
 					// connect lasers along orbital plane
 					satlist [satnum].PreAssignLasersOrbitalPlane ();
@@ -313,9 +306,21 @@ public class SP_basic_0031: MonoBehaviour {
 					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);
 					}
 					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
-				}
+					break;
 
-				
+				case TopologyChoice.skip_satellites:
+					int orbitNum = maxsats / satsperorbit; // 24 for P24_S66 
+					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { 
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);
+						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // cross one satellites on the same plane
+						
+					}
+					else {
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step);
+					}
+					break;
+				}
 			}
 		}
 

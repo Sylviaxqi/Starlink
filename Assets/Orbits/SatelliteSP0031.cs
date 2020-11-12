@@ -346,7 +346,7 @@ public class SatelliteSP0031 {
 		
 	public void PreAssignLasersOrbitalPlane() {
 		int count = 0;
-		int satbase = (satid / sats_per_orbit) * sats_per_orbit;
+		int satbase = (satid / sats_per_orbit) * sats_per_orbit; // first satellite on a perticular orbital plane
 		int nextsat = (((satid - satbase) + 1) % sats_per_orbit) + satbase;
 		for (int i = 0; i < nearestcount; i++) {
 			if (nearestsats [i].satid == nextsat) {
@@ -358,7 +358,7 @@ public class SatelliteSP0031 {
 		}
 	}
 
-	// skipping satellites on the same orbital plane 
+	// skip satellites on the same orbital plane 
 	public void PreAssignLasersCrossOrbitalPlanes(int numCrossed) {
 		int count = 0;
 		int satbase = (satid / sats_per_orbit) * sats_per_orbit;
@@ -407,7 +407,7 @@ public class SatelliteSP0031 {
 		int modsatid = satid % sats_per_orbit; // id of sat in its plane
 		int offset = plane_step * sats_per_orbit + plane_shift;  // default offset, ignoring wrapping
 
-		// ensure we connect to the correct plane
+		// ensure we connect to the correct plane 
 		while ((modsatid + offset) / sats_per_orbit < plane_step) {
 			offset += sats_per_orbit;
 		}
@@ -416,7 +416,7 @@ public class SatelliteSP0031 {
 		}
 		sideways = satid + offset;
 
-		if (sideways >= phase1_satcount) {
+		if (sideways >= phase1_satcount) { // we need to wrap back to the 0th orbital plane from last orbital plane
 			// wrap around end of constellation
 			int stagger = ((int)Mathf.Round ((float)(orbital_planes * sat_phase_stagger)));
 			offset = plane_step * sats_per_orbit + plane_shift + stagger;
