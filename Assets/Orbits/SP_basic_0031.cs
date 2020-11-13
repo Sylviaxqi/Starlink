@@ -44,8 +44,6 @@ public class SP_basic_0031: MonoBehaviour {
 	[Tooltip("Enable use of inter-sat lasers")]
 	public bool use_isls = true;
 	[Tooltip("Enable use of ground relays")]
-	// public bool skip_satellites = false;
-	// [Tooltip("Enable skipping satlellites on the same orbital plane")]
 	public bool use_relays = false;
 	public float relay_dist_step = 1f;
 	[HideInInspector]
@@ -129,7 +127,7 @@ public class SP_basic_0031: MonoBehaviour {
 	public ConstellationChoice constellation;
 	public int no_of_paths = 1;
 	
-	public enum TopologyChoice {basic, skip_satellites};
+	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination};
 	public TopologyChoice topology;
 
 	public int decimator;
@@ -319,6 +317,22 @@ public class SP_basic_0031: MonoBehaviour {
 						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
 						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step);
 					}
+					break;
+
+				case TopologyChoice.skip_and_not_combination:
+					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 0) {
+						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (-3, isl_plane_step);
+					}
+					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 1) {
+						satlist [satnum].PreAssignLasersOrbitalPlane ();
+						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+					}
+					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 2) {
+						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross);
+						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+					}
+
 					break;
 				}
 			}
