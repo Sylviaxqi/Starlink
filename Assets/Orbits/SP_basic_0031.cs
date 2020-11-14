@@ -159,7 +159,18 @@ public class SP_basic_0031: MonoBehaviour {
 		Application.runInBackground = true;
 		sat0pos = Vector3.zero; // center of earth!
 		if (log_choice != LogChoice.None) {
-			logfile = new System.IO.StreamWriter (@log_filename);
+			if (topology == TopologyChoice.basic) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt");
+			}
+			else if (topology == TopologyChoice.skip_satellites) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_skipped.txt");
+			}
+			else if (topology == TopologyChoice.skip_and_not_combination) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_skipAndNon.txt");
+			}
+			else {
+				logfile = new System.IO.StreamWriter (@log_filename);
+			}
 		}
 		start_time = Time.time;
 
