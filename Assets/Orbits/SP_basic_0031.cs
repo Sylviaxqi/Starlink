@@ -136,7 +136,6 @@ public class SP_basic_0031: MonoBehaviour {
 	public float raan0 = 0f;
 
 
-	public enum LogChoice {None, RTT, Distance}; // round trip time,
 	public LogChoice log_choice = LogChoice.None;
 	public string log_filename = "/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt";
 	public enum BeamChoice {AllOff, AllOn, SrcDstOn};
