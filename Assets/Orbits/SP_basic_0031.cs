@@ -67,7 +67,8 @@ public class SP_basic_0031: MonoBehaviour {
 	Vector3[] orbitaxes;
 	int orbitcount = 0, satcount = 0;
 	public Material isl_material;
-	public Material yellowMaterial;
+	//public Material yellowMaterial;
+	public Material[] laserMaterials;
 	public Material cityMaterial;
 	public Text txt;
 	public Text countdown;
@@ -136,6 +137,7 @@ public class SP_basic_0031: MonoBehaviour {
 	public float raan0 = 0f;
 
 
+	// public enum LogChoice {None, RTT, Distance}; // round trip time,
 	public LogChoice log_choice = LogChoice.None;
 	public string log_filename = "/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt";
 	public enum BeamChoice {AllOff, AllOn, SrcDstOn};
@@ -417,7 +419,7 @@ public class SP_basic_0031: MonoBehaviour {
 			cam.transform.position = new Vector3 (100, 0, -60);
 			cam.transform.rotation = Quaternion.Euler (0, 300, -90);
 			cam.transform.SetParent (followsat.gameobject.transform,false);
-			followsat.ChangeMaterial (yellowMaterial);
+			followsat.ChangeMaterial (laserMaterials[0]);
 			nearest_sats = new SatelliteSP0031[4];
 		}
 
@@ -904,7 +906,7 @@ public class SP_basic_0031: MonoBehaviour {
 		/* finalize the choices, and draw the lasers */
 		for (int satnum = 0; satnum < maxsats; satnum++) {
 			if (route_choice == RouteChoice.Followsat && followsat_id == satnum) {
-				satlist [satnum].FinalizeLasers (speed, yellowMaterial);
+				satlist [satnum].FinalizeLasers (speed, laserMaterials[0]);
 			} else {
 				satlist [satnum].FinalizeLasers (speed, isl_material);
 			}
@@ -1171,8 +1173,12 @@ public class SP_basic_0031: MonoBehaviour {
 					/* it's an ISL */
 					sat = satlist [id];
 					prevsat = satlist [previd];
-					sat.ColourLink (prevsat, yellowMaterial);
-					prevsat.ColourLink (sat, yellowMaterial);
+					int pathcolour = pathnum;
+					if (pathcolour >= laserMaterials.Length) {
+						pathcolour = laserMaterials.Length - 1;
+					}
+					sat.ColourLink (prevsat, laserMaterials[pathcolour]);
+					prevsat.ColourLink (sat, laserMaterials[pathcolour]);
 					used_isl_links.Add (new ActiveISL (sat, rn, prevsat, prevnode));
 				} else {
 					/* it's an RF link */
