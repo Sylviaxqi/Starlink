@@ -482,7 +482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 1375312109}
   spin: 1
-  speed: 10
+  speed: 100
   use_isls: 1
   use_relays: 0
   relay_dist_step: 2
@@ -499,19 +499,24 @@ MonoBehaviour:
   beam_prefab2: {fileID: 1454064570112744, guid: ae0115a2e33c24b7d92d193312575599,
     type: 3}
   isl_material: {fileID: 2100000, guid: 054725efd433545d0867a6c84dd8b574, type: 2}
-  yellowMaterial: {fileID: 2100000, guid: d6795a24fec3f4b478a2532645da09a8, type: 2}
-  cityMaterial: {fileID: 2100000, guid: d6795a24fec3f4b478a2532645da09a8, type: 2}
+  laserMaterials:
+  - {fileID: 2100000, guid: d6795a24fec3f4b478a2532645da09a8, type: 2}
+  - {fileID: 2100000, guid: 7931bb27edd134e85b919e88f2970275, type: 2}
+  - {fileID: 2100000, guid: d42fe79d9d8d44828b2d78470b7f1d93, type: 2}
+  - {fileID: 2100000, guid: 4398602df8d6d4e44862bde1f4671791, type: 2}
+  - {fileID: 2100000, guid: 8a73e817edadc4e2b9a07a6f9710762e, type: 2}
+  cityMaterial: {fileID: 2100000, guid: 797d3a006985c4360b1eacc047379bae, type: 2}
   txt: {fileID: 2091605839}
   countdown: {fileID: 485043185}
   rightbottom: {fileID: 1204926847}
   maxorbits: 24
-  route_choice: 2
-  constellation: 0
-  no_of_paths: 1
-  topology: 1
+  route_choice: 7
+  constellation: 2
+  no_of_paths: 10
+  topology: 0
   decimator: 1
   raan0: 0
-  log_choice: 0
+  log_choice: 1
   log_filename: /Users/sylvia/Desktop/dist.txt
   beam_on: 0
   graph_on: 0

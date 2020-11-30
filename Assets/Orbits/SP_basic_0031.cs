@@ -337,42 +337,39 @@ public class SP_basic_0031: MonoBehaviour {
 					// connect lasers along orbital plane
 					satlist [satnum].PreAssignLasersOrbitalPlane ();
 					} else {
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);//-1
 					}
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-1
 					break;
 
 				case TopologyChoice.skip_satellites:
 					int orbitNum = maxsats / satsperorbit; // 24 for P24_S66 
 					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { 
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step); //-1
 						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // cross one satellites on the same plane
 						
 					}
 					else {
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-1
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step); //-2
 					}
 					break;
 
 				case TopologyChoice.skip_and_not_combination:
 					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 0) {
-					// connect to the neighbour on neighbour orbital plane
-					// connect to the one in front of neighbour on neighbour orbital plane
 						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
-						satlist [satnum].PreAssignLasersBetweenPlanes (-3, isl_plane_step);
-					}
-					// connect to the neighbour one on same orbital plane
-					// connect to the neighbour on neighbour orbital plane
-					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 1) {
 						satlist [satnum].PreAssignLasersOrbitalPlane ();
-						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+
 					}
-					// skip one on same orbital plane
-					// connect to the neighbour on neighbour orbital plane
-					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 2) {
-						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross);
+
+					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 1) {
 						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross);
+
+					}
+					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 2) {
+						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (0, isl_plane_step);
 					}
 					break;
 				
