@@ -130,7 +130,7 @@ public class SP_basic_0031: MonoBehaviour {
 	public ConstellationChoice constellation;
 	public int no_of_paths = 1;
 	
-	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3};
+	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3, horizontal_skip};
 	public TopologyChoice topology;
 
 	public int decimator;
@@ -174,6 +174,9 @@ public class SP_basic_0031: MonoBehaviour {
 				else if (topology == TopologyChoice.constellation3) {
 					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_constellation3.txt");
 				}
+				else if (topology == TopologyChoice.horizontal_skip) {
+					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_horizontalSkip.txt");
+				}
 				else {
 					logfile = new System.IO.StreamWriter (@log_filename);
 				}
@@ -190,6 +193,9 @@ public class SP_basic_0031: MonoBehaviour {
 				}
 				else if (topology == TopologyChoice.constellation3) {
 					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/hop_constellation3.txt");
+				}
+				else if (topology == TopologyChoice.constellation3) {
+					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/hop_horizontalSkip.txt");
 				}
 				else {
 					logfile = new System.IO.StreamWriter (@log_filename);
@@ -220,11 +226,11 @@ public class SP_basic_0031: MonoBehaviour {
 			beam_radius = 940f;
 			orbital_period = 5739; // seconds
 			isl_connect_plane = true;
-			isl_plane_shift = -1;  // isl offset to next plane
+			isl_plane_shift = -2;  // isl offset to next plane
 			isl_plane_step = 1;
 			isl_plane2_shift = -1;
 			isl_plane2_step = 1;
-			isl_plane3_shift = -2;
+			isl_plane3_shift = -1;
 			isl_plane3_step = 1;
 			numSats_to_cross = 2;
 			phase_offset = 13f / 24f;
@@ -258,7 +264,7 @@ public class SP_basic_0031: MonoBehaviour {
 			beam_radius = 1060f;
 			orbital_period = 6500; // seconds
 			isl_connect_plane = true;
-			isl_plane_shift = -1; 
+			isl_plane_shift = 0; 
 			isl_plane_step = 1;
 			isl_plane2_shift = -1;
 			isl_plane2_step = 1;
@@ -337,39 +343,39 @@ public class SP_basic_0031: MonoBehaviour {
 					// connect lasers along orbital plane
 					satlist [satnum].PreAssignLasersOrbitalPlane ();
 					} else {
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step);//-1
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
 					}
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-1
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
 					break;
 
 				case TopologyChoice.skip_satellites:
 					int orbitNum = maxsats / satsperorbit; // 24 for P24_S66 
 					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { 
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane2_shift, isl_plane2_step); //-1
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step); //-1
 						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // cross one satellites on the same plane
 						
 					}
 					else {
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-1
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step); //-2
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-2 diagonal one fixed
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step); //-1
 					}
 					break;
 
 				case TopologyChoice.skip_and_not_combination:
 					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 0) {
-						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-2
 						satlist [satnum].PreAssignLasersOrbitalPlane ();
 
 					}
 
 					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 1) {
-						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-2
 						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross);
 
 					}
 					else if ((satnum - satsperorbit * (satnum / satsperorbit)) % 3 == 2) {
-						satlist [satnum].PreAssignLasersBetweenPlanes (-2, isl_plane_step);
-						satlist [satnum].PreAssignLasersBetweenPlanes (0, isl_plane_step);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-2
+						satlist [satnum].PreAssignLasersBetweenPlanes (0, isl_plane_step); // diagonal one fixed
 					}
 					break;
 				
@@ -388,7 +394,7 @@ public class SP_basic_0031: MonoBehaviour {
 								satlist [satnum].PreAssignLasersOrbitalPlane ();
 							}
 						}
-						satlist [satnum].PreAssignLasersBetweenPlanes (-1, 1);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); // -2
 					break;
 				}
 			}
