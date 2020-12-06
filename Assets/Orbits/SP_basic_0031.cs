@@ -194,7 +194,7 @@ public class SP_basic_0031: MonoBehaviour {
 				else if (topology == TopologyChoice.constellation3) {
 					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/hop_constellation3.txt");
 				}
-				else if (topology == TopologyChoice.constellation3) {
+				else if (topology == TopologyChoice.horizontal_skip) {
 					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/hop_horizontalSkip.txt");
 				}
 				else {
@@ -380,21 +380,30 @@ public class SP_basic_0031: MonoBehaviour {
 					break;
 				
 				case TopologyChoice.constellation3:
-						if ((satnum / satsperorbit) % 2 == 0) {
-						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // 2
+					if ((satnum / satsperorbit) % 2 == 0) {
+					satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // 2
+					}
+					else {
+						if (satnum % 3 == 0) {
+							satlist [satnum].PreAssignLasersCrossOrbitalPlanes (3);
+						}
+						else if (satnum % 3 == 2) {
+							satlist [satnum].PreAssignLasersCrossOrbitalPlanes (2);
 						}
 						else {
-							if (satnum % 3 == 0) {
-								satlist [satnum].PreAssignLasersCrossOrbitalPlanes (3);
-							}
-							else if (satnum % 3 == 2) {
-								satlist [satnum].PreAssignLasersCrossOrbitalPlanes (2);
-							}
-							else {
-								satlist [satnum].PreAssignLasersOrbitalPlane ();
-							}
+							satlist [satnum].PreAssignLasersOrbitalPlane ();
 						}
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); // -2
+					}
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); // -2
+					break;
+				case TopologyChoice.horizontal_skip:
+					satlist [satnum].PreAssignLasersOrbitalPlane ();
+					if ((satnum / satsperorbit) % 2 == 0) {
+						satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2);
+					}
+					else {
+						satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
+					}
 					break;
 				}
 			}
