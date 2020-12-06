@@ -510,10 +510,10 @@ MonoBehaviour:
   countdown: {fileID: 485043185}
   rightbottom: {fileID: 1204926847}
   maxorbits: 24
-  route_choice: 7
+  route_choice: 5
   constellation: 2
   no_of_paths: 10
-  topology: 0
+  topology: 2
   decimator: 1
   raan0: 0
   log_choice: 1
