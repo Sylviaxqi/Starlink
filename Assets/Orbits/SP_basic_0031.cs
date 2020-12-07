@@ -130,7 +130,7 @@ public class SP_basic_0031: MonoBehaviour {
 	public ConstellationChoice constellation;
 	public int no_of_paths = 1;
 	
-	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3, horizontal_skip};
+	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3, horizontal_skip, top1_p72};
 	public TopologyChoice topology;
 
 	public int decimator;
@@ -177,6 +177,9 @@ public class SP_basic_0031: MonoBehaviour {
 				else if (topology == TopologyChoice.horizontal_skip) {
 					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_horizontalSkip.txt");
 				}
+				else if (topology == TopologyChoice.top1_p72) {
+					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_top1_p72.txt");
+				}
 				else {
 					logfile = new System.IO.StreamWriter (@log_filename);
 				}
@@ -196,6 +199,9 @@ public class SP_basic_0031: MonoBehaviour {
 				}
 				else if (topology == TopologyChoice.horizontal_skip) {
 					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/hop_horizontalSkip.txt");
+				}
+				else if (topology == TopologyChoice.top1_p72) {
+					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/hop_top1_p72.txt");
 				}
 				else {
 					logfile = new System.IO.StreamWriter (@log_filename);
@@ -403,6 +409,16 @@ public class SP_basic_0031: MonoBehaviour {
 					}
 					else {
 						satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
+					}
+					break;
+				case TopologyChoice.top1_p72:
+					if ((satnum / satsperorbit) % 2 == 0) {
+						satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
+						satlist [satnum].PreAssignLasersBetweenPlanes (0, 1);
+					}
+					else {
+						satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2);
+						satlist [satnum].PreAssignLasersBetweenPlanes (0, 1);
 					}
 					break;
 				}
