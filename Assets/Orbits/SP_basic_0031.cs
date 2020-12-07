@@ -162,24 +162,46 @@ public class SP_basic_0031: MonoBehaviour {
 		sat0pos = Vector3.zero; // center of earth!
 		if (log_choice != LogChoice.None) {
 			if (log_choice == LogChoice.RTT) {
-				if (topology == TopologyChoice.basic) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt");
+				// {TransAt, TransPac, LonJob, USsparse, USdense, TorMia, Sydney_SFO, Sydney_Tokyo, Sydney_Lima, Followsat};
+				if (route_choice == RouteChoice.TransAt) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TransAt.txt");
 				}
-				else if (topology == TopologyChoice.skip_satellites) {
-					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_skipped.txt");
+				else if (route_choice == RouteChoice.TransPac) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TransPac.txt");
 				}
-				else if (topology == TopologyChoice.skip_and_not_combination) {
-					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_skipAndNon.txt");
+				else if (route_choice == RouteChoice.LonJob) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_LonJob.txt");
 				}
-				else if (topology == TopologyChoice.constellation3) {
-					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_constellation3.txt");
+				else if (route_choice == RouteChoice.USsparse) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_USsparse.txt");
 				}
-				else if (topology == TopologyChoice.horizontal_skip) {
-					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_horizontalSkip.txt");
+				else if (route_choice == RouteChoice.TorMia) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TorMia.txt");
 				}
-				else if (topology == TopologyChoice.top1_p72) {
-					logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_top1_p72.txt");
+				else if (route_choice == RouteChoice.Sydney_SFO) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Sydney_SFO.txt");
 				}
+				else if (route_choice == RouteChoice.Sydney_Tokyo) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Sydney_Tokyo.txt");
+				}
+				// if (topology == TopologyChoice.basic) {
+				// logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt");
+				// }
+				// else if (topology == TopologyChoice.skip_satellites) {
+				// 	logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_skipped.txt");
+				// }
+				// else if (topology == TopologyChoice.skip_and_not_combination) {
+				// 	logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_skipAndNon.txt");
+				// }
+				// else if (topology == TopologyChoice.constellation3) {
+				// 	logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_constellation3.txt");
+				// }
+				// else if (topology == TopologyChoice.horizontal_skip) {
+				// 	logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_horizontalSkip.txt");
+				// }
+				// else if (topology == TopologyChoice.top1_p72) {
+				// 	logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_top1_p72.txt");
+				// }
 				else {
 					logfile = new System.IO.StreamWriter (@log_filename);
 				}
@@ -270,7 +292,7 @@ public class SP_basic_0031: MonoBehaviour {
 			beam_radius = 1060f;
 			orbital_period = 6500; // seconds
 			isl_connect_plane = true;
-			isl_plane_shift = 0; 
+			isl_plane_shift = -1; 
 			isl_plane_step = 1;
 			isl_plane2_shift = -1;
 			isl_plane2_step = 1;
