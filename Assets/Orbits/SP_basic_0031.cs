@@ -374,6 +374,13 @@ public class SP_basic_0031: MonoBehaviour {
 					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
 					}
 					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
+					// if (isl_connect_plane) {
+					// // connect lasers along orbital plane
+					// 	satlist [satnum].PreAssignLasersOrbitalPlane ();
+					// } else {
+					// 	satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
+					// }
+					// satlist [satnum].PreAssignLasersBetweenPlanes (-1, 1);
 					break;
 
 				case TopologyChoice.skip_satellites:
