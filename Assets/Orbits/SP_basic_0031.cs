@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 // test
 // option for the route choice drop-down list
-public enum RouteChoice {TransAt, TransPac, LonJob, USsparse, USdense, TorMia, Sydney_SFO, Sydney_Tokyo, Sydney_Lima, Followsat};
+public enum RouteChoice {TransAt, TransPac, LonJob, ShanghaiDubai, SingaporeNairobi, USsparse, USdense, TorMia, Sydney_SFO, Sydney_Tokyo, Sydney_Lima, Followsat};
 public enum LogChoice { None, RTT, Distance, HopDists, LaserDists };
 
 public class ActiveISL {
@@ -97,7 +97,7 @@ public class SP_basic_0031: MonoBehaviour {
 	RouteGraph rg;
 	float km_per_unit;
 	//float km_per_unit2;
-	GameObject london, new_york, san_francisco, singapore, johannesburg, athens, auckland, sydney;
+	GameObject london, new_york, san_francisco, singapore, johannesburg, athens, auckland, sydney, dubai, shanghai, nairobi;
 	GameObject northbend, conrad, merrillan, greenville,redmond,hawthorne, bismarck, toronto, 
 		thunderbay, columbus, lisbon, miami, majorca, tokyo, chicago, lima;
 
@@ -130,7 +130,7 @@ public class SP_basic_0031: MonoBehaviour {
 	public ConstellationChoice constellation;
 	public int no_of_paths = 1;
 	
-	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3, horizontal_skip, top1_p72};
+	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3, horizontal_skip, top1_p72, horizontal_const3};
 	public TopologyChoice topology;
 
 	public int decimator;
@@ -183,6 +183,12 @@ public class SP_basic_0031: MonoBehaviour {
 				}
 				else if (route_choice == RouteChoice.Sydney_Tokyo) {
 				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Sydney_Tokyo.txt");
+				}
+				else if (route_choice == RouteChoice.ShanghaiDubai) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Shanghai_Dubai.txt");
+				}
+				else if (route_choice == RouteChoice.SingaporeNairobi) {
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Singapore_Nairobi.txt");
 				}
 				// if (topology == TopologyChoice.basic) {
 				// logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt");
@@ -272,7 +278,7 @@ public class SP_basic_0031: MonoBehaviour {
 			maxdist = 1123f;
 			beam_radius = 940f;
 			orbital_period = 5739; // seconds	
-			isl_connect_plane = true;
+			isl_connect_plane = false;
 			isl_plane_shift = -1;
 			isl_plane_step = 1;
 			isl_plane2_shift = -1;
@@ -371,11 +377,11 @@ public class SP_basic_0031: MonoBehaviour {
 					// connect lasers along orbital plane
 					satlist [satnum].PreAssignLasersOrbitalPlane ();
 					} else {
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-1
 					}
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
-					// if (isl_connect_plane) {
-					// // connect lasers along orbital plane
+					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-1
+					
+					// connect lasers along orbital plane for p72
 					// 	satlist [satnum].PreAssignLasersOrbitalPlane ();
 					// } else {
 					// 	satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
@@ -450,6 +456,30 @@ public class SP_basic_0031: MonoBehaviour {
 						satlist [satnum].PreAssignLasersBetweenPlanes (0, 1);
 					}
 					break;
+				case TopologyChoice.horizontal_const3:
+						// satlist [satnum].PreAssignLasersBetweenPlanes (-1, 1); // orange
+						if ((satnum / satsperorbit) % 2 == 0) { // orbital plane is even
+							if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 1) { // satnum is odd
+								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2); // blue
+							}
+						}
+						if ((satnum / satsperorbit) % 2 == 1) {
+							if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 1) { // satnum is odd
+								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2); // red
+								}
+						}
+						if ((satnum / satsperorbit) % 3 == 0) {
+							if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { // satnum is even
+ 								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 3); // green
+							}
+						}
+						if (((satnum / satsperorbit) % 3 == 1) && ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0)) {
+ 								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 1); // purple 1
+						}
+						if (((satnum / satsperorbit) % 3 == 2) && ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0)) {
+ 								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2); // purple 2
+						}
+					break;
 				}
 			}
 		}
@@ -502,6 +532,11 @@ public class SP_basic_0031: MonoBehaviour {
 		tokyo = CreateCity (35.652832f, -139.839478f, false);
 		chicago = CreateCity (41.881832f, 87.623177f, false);
 		toronto = CreateCity (43.70011f, 79.4163f, false);
+		dubai = CreateCity (25.276987f,-55.296249f, false);
+		shanghai = CreateCity (31.224361f,-121.469170f, false);
+		nairobi = CreateCity (-1.286389f,-36.817223f, false);
+
+
 
 
 		/*
@@ -1442,6 +1477,14 @@ public class SP_basic_0031: MonoBehaviour {
 			
 		case RouteChoice.LonJob:
 			MultiRoute (no_of_paths, london, johannesburg, "London-Johannesburg", 164f, 9079.92f);
+			break;
+		
+		case RouteChoice.ShanghaiDubai:
+			MultiRoute (no_of_paths, shanghai, dubai, "Shanghai-Dubai", 0f, 5846.75f);
+			break;
+		
+		case RouteChoice.SingaporeNairobi:
+			MultiRoute (no_of_paths, singapore, nairobi, "Singapore-Nairobri", 0f, 4636f);
 			break;
 
 		case RouteChoice.TransPac:

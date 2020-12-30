@@ -95,6 +95,37 @@ public class CameraSP_0031 : MonoBehaviour {
 			    lightrot = new Vector3 (20f, 130f, 0f);
 			    FoV = 60f;
                 break;
+			
+			case RouteChoice.ShanghaiDubai:
+			    cam_count = 2;
+			    positions.Add (new Vector3 (32f, 16f, 8f));
+			    angles.Add (new Vector3 (20f, -110f, 0f));
+			    times.Add (0f);
+			    speeds.Add (0.01f);
+
+			    positions.Add (new Vector3 (27f, 19f, 8f));
+			    angles.Add (new Vector3 (20f, -110f, 0f));
+			    times.Add (100000f);
+			    speeds.Add (0.01f);
+
+			    lightrot = new Vector3 (20f, -110f, 0f);
+			    FoV = 60f;
+                break;
+			case RouteChoice.SingaporeNairobi:
+			    cam_count = 2;
+			    positions.Add (new Vector3 (41f, 14f, 1f));
+			    angles.Add (new Vector3 (20f, -90f, 0f));
+			    times.Add (0f);
+			    speeds.Add (0.01f);
+
+			    positions.Add (new Vector3 (41f, 14f, 1f));
+			    angles.Add (new Vector3 (20f, -90f, 0f));
+			    times.Add (100000f);
+			    speeds.Add (0.01f);
+
+			    lightrot = new Vector3 (20f, -90f, 0f);
+			    FoV = 60f;
+                break;
 
 		    case RouteChoice.TorMia:
 			    // US view 60 degree
