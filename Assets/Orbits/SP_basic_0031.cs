@@ -130,7 +130,7 @@ public class SP_basic_0031: MonoBehaviour {
 	public ConstellationChoice constellation;
 	public int no_of_paths = 1;
 	
-	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3, horizontal_skip, top1_p72, horizontal_const3};
+	public enum TopologyChoice {basic, skip_satellites, skip_and_not_combination, constellation3, horizontal_skip,x_shape, top1_p72, horizontal_const3};
 	public TopologyChoice topology;
 
 	public int decimator;
@@ -164,31 +164,31 @@ public class SP_basic_0031: MonoBehaviour {
 			if (log_choice == LogChoice.RTT) {
 				// {TransAt, TransPac, LonJob, USsparse, USdense, TorMia, Sydney_SFO, Sydney_Tokyo, Sydney_Lima, Followsat};
 				if (route_choice == RouteChoice.TransAt) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TransAt.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TransAtB702.txt");
 				}
 				else if (route_choice == RouteChoice.TransPac) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TransPac.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TransPacB702.txt");
 				}
 				else if (route_choice == RouteChoice.LonJob) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_LonJob.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_LonJobB702.txt");
 				}
 				else if (route_choice == RouteChoice.USsparse) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_USsparse.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_USsparseB702.txt");
 				}
 				else if (route_choice == RouteChoice.TorMia) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TorMia.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_TorMiaB702.txt");
 				}
 				else if (route_choice == RouteChoice.Sydney_SFO) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Sydney_SFO.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Sydney_SFOB702.txt");
 				}
 				else if (route_choice == RouteChoice.Sydney_Tokyo) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Sydney_Tokyo.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Sydney_TokyoB702.txt");
 				}
 				else if (route_choice == RouteChoice.ShanghaiDubai) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Shanghai_Dubai.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Shanghai_DubaiB702.txt");
 				}
 				else if (route_choice == RouteChoice.SingaporeNairobi) {
-				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Singapore_Nairobi.txt");
+				logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist_Singapore_NairobiB702.txt");
 				}
 				// if (topology == TopologyChoice.basic) {
 				// logfile = new System.IO.StreamWriter (@"/Users/sylvia/Desktop/3/Final Year Project/Python Script/dist.txt");
@@ -374,31 +374,32 @@ public class SP_basic_0031: MonoBehaviour {
 				switch (topology)  {
 				case TopologyChoice.basic:
 					if (isl_connect_plane) {
-					// connect lasers along orbital plane
-					satlist [satnum].PreAssignLasersOrbitalPlane ();
-					} else {
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-1
-					}
-					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-1
+					// // connect lasers along orbital plane
+					// satlist [satnum].PreAssignLasersOrbitalPlane ();
+					// } else {
+					// satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
+					// }
+					// satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step);//-2
 					
 					// connect lasers along orbital plane for p72
-					// 	satlist [satnum].PreAssignLasersOrbitalPlane ();
-					// } else {
-					// 	satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
-					// }
-					// satlist [satnum].PreAssignLasersBetweenPlanes (-1, 1);
+						satlist [satnum].PreAssignLasersOrbitalPlane ();
+					} else {
+						satlist [satnum].PreAssignLasersBetweenPlanes (0, 2);
+					}
+					satlist [satnum].PreAssignLasersBetweenPlanes (-1, 1);
 					break;
 
+				// remember to swap plane_shift and plane3_shift for p32 and p24
 				case TopologyChoice.skip_satellites:
 					int orbitNum = maxsats / satsperorbit; // 24 for P24_S66 
 					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { 
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step); //-1
+						satlist [satnum].PreAssignLasersBetweenPlanes (0, isl_plane_step); //-1
 						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // cross one satellites on the same plane
 						
 					}
 					else {
 						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-2 diagonal one fixed
-						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step); //-1
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane3_step);  // 0, -1, -3
 					}
 					break;
 
@@ -421,22 +422,23 @@ public class SP_basic_0031: MonoBehaviour {
 					break;
 				
 				case TopologyChoice.constellation3:
-					if ((satnum / satsperorbit) % 2 == 0) {
-					satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // 2
+					if ((satnum / satsperorbit) % 2 == 0) { // satellites on even orbital plane
+					satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // skip one satellite on the same orbit
 					}
-					else {
+					else { // satellite on odd orbital plane 
 						if (satnum % 3 == 0) {
-							satlist [satnum].PreAssignLasersCrossOrbitalPlanes (3);
+							satlist [satnum].PreAssignLasersCrossOrbitalPlanes (3); // skip two satellites on the same orbit
 						}
 						else if (satnum % 3 == 2) {
-							satlist [satnum].PreAssignLasersCrossOrbitalPlanes (2);
+							satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross);
 						}
 						else {
-							satlist [satnum].PreAssignLasersOrbitalPlane ();
+							satlist [satnum].PreAssignLasersOrbitalPlane (); // emit to the neighbouring satellite on the same orbit
 						}
 					}
 					satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); // -2
 					break;
+
 				case TopologyChoice.horizontal_skip:
 					satlist [satnum].PreAssignLasersOrbitalPlane ();
 					if ((satnum / satsperorbit) % 2 == 0) {
@@ -446,39 +448,39 @@ public class SP_basic_0031: MonoBehaviour {
 						satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
 					}
 					break;
-				case TopologyChoice.top1_p72:
-					if ((satnum / satsperorbit) % 2 == 0) {
-						satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2);
-						satlist [satnum].PreAssignLasersBetweenPlanes (0, 1);
+				case TopologyChoice.x_shape:
+					if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { 
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane_step); 
+						satlist [satnum].PreAssignLasersCrossOrbitalPlanes (numSats_to_cross); // cross one satellites on the same plane	
 					}
 					else {
-						satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2);
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane_shift, isl_plane_step); //-1 diagonal one fixed
+						satlist [satnum].PreAssignLasersBetweenPlanes (isl_plane3_shift, isl_plane3_step); 
+					}
+					break;
+				case TopologyChoice.top1_p72:
+					if ((satnum / satsperorbit) % 2 == 0) { // orbital plane number is even
 						satlist [satnum].PreAssignLasersBetweenPlanes (0, 1);
+						satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2); // s
+					}
+					else {
+						satlist [satnum].PreAssignLasersBetweenPlanes (0, 1);
+						satlist [satnum].PreAssignLasersBetweenPlanes (-1, 2); // s
 					}
 					break;
 				case TopologyChoice.horizontal_const3:
-						// satlist [satnum].PreAssignLasersBetweenPlanes (-1, 1); // orange
-						if ((satnum / satsperorbit) % 2 == 0) { // orbital plane is even
-							if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 1) { // satnum is odd
-								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2); // blue
-							}
-						}
-						if ((satnum / satsperorbit) % 2 == 1) {
-							if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 1) { // satnum is odd
-								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2); // red
-								}
-						}
-						if ((satnum / satsperorbit) % 3 == 0) {
-							if ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0) { // satnum is even
- 								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 3); // green
-							}
-						}
-						if (((satnum / satsperorbit) % 3 == 1) && ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0)) {
- 								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 1); // purple 1
-						}
-						if (((satnum / satsperorbit) % 3 == 2) && ((satnum - satsperorbit * (satnum / satsperorbit)) % 2 == 0)) {
- 								satlist [satnum].PreAssignLasersBetweenPlanes (-2, 2); // purple 2
-						}
+					if ((satnum / satsperorbit) % 3 == 0) {
+						satlist [satnum].PreAssignLasersBetweenPlanes(-1, 1);
+						satlist [satnum].PreAssignLasersBetweenPlanes(-1, 2);
+					}
+					else if ((satnum / satsperorbit) % 3 == 1) {
+						satlist [satnum].PreAssignLasersBetweenPlanes(-1, 1);
+						satlist [satnum].PreAssignLasersBetweenPlanes(-1, 3);
+					}
+					else if ((satnum / satsperorbit) % 3 == 2) {
+						satlist [satnum].PreAssignLasersBetweenPlanes(-1, 1);
+						satlist [satnum].PreAssignLasersBetweenPlanes(0, 1);
+					}
 					break;
 				}
 			}
@@ -1480,11 +1482,11 @@ public class SP_basic_0031: MonoBehaviour {
 			break;
 		
 		case RouteChoice.ShanghaiDubai:
-			MultiRoute (no_of_paths, shanghai, dubai, "Shanghai-Dubai", 0f, 5846.75f);
+			MultiRoute (no_of_paths, shanghai, dubai, "Shanghai-Dubai", 0f, 6422.75f);
 			break;
 		
 		case RouteChoice.SingaporeNairobi:
-			MultiRoute (no_of_paths, singapore, nairobi, "Singapore-Nairobri", 0f, 4636f);
+			MultiRoute (no_of_paths, singapore, nairobi, "Singapore-Nairobri", 0f, 7450f);
 			break;
 
 		case RouteChoice.TransPac:
@@ -1505,7 +1507,7 @@ public class SP_basic_0031: MonoBehaviour {
                 break;
 
         case RouteChoice.Sydney_Tokyo:
-            MultiRoute(no_of_paths, sydney, tokyo, "Sydney-Tokyo", 0f, 0f);
+            MultiRoute(no_of_paths, sydney, tokyo, "Sydney-Tokyo", 0f, 7826.41f);
             break;
 
         case RouteChoice.Sydney_Lima:

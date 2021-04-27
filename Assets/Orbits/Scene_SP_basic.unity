@@ -482,7 +482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 1375312109}
   spin: 1
-  speed: 100
+  speed: 10
   use_isls: 1
   use_relays: 0
   relay_dist_step: 2
@@ -510,13 +510,13 @@ MonoBehaviour:
   countdown: {fileID: 485043185}
   rightbottom: {fileID: 1204926847}
   maxorbits: 24
-  route_choice: 7
+  route_choice: 5
   constellation: 2
-  no_of_paths: 10
-  topology: 0
+  no_of_paths: 1
+  topology: 4
   decimator: 1
   raan0: 0
-  log_choice: 1
+  log_choice: 0
   log_filename: /Users/sylvia/Desktop/dist.txt
   beam_on: 0
   graph_on: 0
